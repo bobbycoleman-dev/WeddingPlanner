@@ -22,7 +22,11 @@ public class WeddingController : Controller
     public ViewResult AllWeddings()
     {
         //* Include Attendee Association list for Guest Count & Include Planner for Delete Action
-        List<Wedding> WeddingsList = _context.Weddings.Include(w => w.AttendeeAssociations).ThenInclude(a => a.Attendee).Include(w => w.Planner).ToList();
+        List<Wedding> WeddingsList = _context.Weddings
+                                                .Include(w => w.AttendeeAssociations)
+                                                .ThenInclude(a => a.Attendee)
+                                                .Include(w => w.Planner)
+                                                .ToList();
         return View(WeddingsList);
     }
 
@@ -49,7 +53,10 @@ public class WeddingController : Controller
     [HttpGet("weddings/{weddingId}")]
     public ViewResult ShowWedding(int weddingId)
     {
-        Wedding? OneWedding = _context.Weddings.Include(w => w.AttendeeAssociations).ThenInclude(a => a.Attendee).FirstOrDefault(w => w.WeddingId == weddingId);
+        Wedding? OneWedding = _context.Weddings
+                                        .Include(w => w.AttendeeAssociations)
+                                        .ThenInclude(a => a.Attendee)
+                                        .FirstOrDefault(w => w.WeddingId == weddingId);
         return View(OneWedding);
     }
 
