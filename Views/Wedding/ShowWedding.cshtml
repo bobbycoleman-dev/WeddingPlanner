@@ -1,0 +1,26 @@
+@{
+    int? CurrentUser = Context.Session.GetInt32("UserId");
+}
+@model Wedding
+<div>
+    <h1>@Model.WedderOne & @Model.WedderTwo's Wedding</h1>
+    <div>
+        <div class="card shadow w-50">
+            <div class="card-body">
+                <p>Date: @Html.DisplayFor(d => Model.Date)</p>
+                <p>Location: @Model.Address</p>
+                <p class="mb-0">Guests:</p>
+                <div class="border rounded p-2">
+                    @foreach(Association a in Model.AttendeeAssociations)
+                    {
+                        <p>@a.Attendee.FirstName @a.Attendee.LastName</p>
+                    }
+                </div>
+                @if(Model.UserId == CurrentUser)
+                {
+                    <div class="text-end mt-3"><a asp-action="EditWedding" asp-controller="Wedding" asp-route-weddingId=@Model.WeddingId class="btn btn-primary">Edit</a></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

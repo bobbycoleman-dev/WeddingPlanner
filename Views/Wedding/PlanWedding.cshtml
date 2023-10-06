@@ -1,0 +1,35 @@
+@{
+    int? CurrentUser = Context.Session.GetInt32("UserId");
+}
+@model Wedding
+<div>
+    <h2>Plan a Wedding</h2>
+    <div class="card shadow w-50">
+        <div class="card-body">
+            <form asp-action="CreateWedding" asp-controller="Wedding" method="post">
+                <input type="hidden" asp-for="UserId" value=@CurrentUser>
+                <div class="mb-3">
+                    <label asp-for="WedderOne" class="form-label"></label>
+                    <input asp-for="WedderOne" class="form-control">
+                    <span class="text-danger" asp-validation-for="WedderOne"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="WedderTwo" class="form-label"></label>
+                    <input asp-for="WedderTwo" class="form-control">
+                    <span class="text-danger" asp-validation-for="WedderTwo"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Date" class="form-label"></label>
+                    <input asp-for="Date" class="form-control">
+                    <span class="text-danger" asp-validation-for="Date"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control">
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+                <div class="text-end"><button class="btn btn-success">Create</button></div>
+            </form>
+        </div>
+    </div>
+</div>

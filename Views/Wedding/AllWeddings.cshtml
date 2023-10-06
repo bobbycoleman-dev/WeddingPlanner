@@ -1,0 +1,52 @@
+@{
+    int? CurrentUser = Context.Session.GetInt32("UserId");
+}
+@model List<Wedding>
+<div>
+    <table class="table text-center align-middle table-hover">
+        <thead>
+            <tr>
+                <td>Wedding of</td>
+                <td>Date</td>
+                <td>Guest Count</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Wedding w in Model)
+            {
+                bool attending = w.AttendeeAssociations.Any(aa => aa.UserId == CurrentUser);
+                
+                    <tr>
+                        <td><a asp-action="ShowWedding" asp-controller="Wedding" asp-route-weddingId=@w.WeddingId>@w.WedderOne & @w.WedderTwo</a></td>
+                        <td>@Html.DisplayFor(d => w.Date)</td>
+                        <td>@w.AttendeeAssociations.Count()</td>
+                        <td>
+                            @if(w.UserId == CurrentUser)
+                            {
+                                <form asp-action="DeleteWedding" asp-controller="Wedding" asp-route-weddingId=@w.WeddingId method="post">
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            } else {
+                                if(attending)
+                                {
+                                    <form asp-action="UnRSVP" asp-controller="Association" method="post">
+                                        <input type="hidden" name="attendeeId" value=@CurrentUser>
+                                        <input type="hidden" name="weddingId" value=@w.WeddingId>
+                                        <button class="btn btn-sm btn-warning">Un-RSVP</button>
+                                    </form>
+                                } else {
+                                    <form asp-action="RSVP" asp-controller="Association" method="post">
+                                        <input type="hidden" name="attendeeId" value=@CurrentUser>
+                                        <input type="hidden" name="weddingId" value=@w.WeddingId>
+                                        <button class="btn btn-sm btn-success">RSVP</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                
+            }
+        </tbody>
+    </table>
+</div>
